@@ -62,7 +62,9 @@ jvp_embeddings = infdist.create_jvp_store(
 )
 ```
 
-This process generates a 4096-dimensional embedding for each training sample. While the current implementation processes samples one at a time and iterates over tangent vectors sequentially, future versions will support batched computation over both samples and tangent vectors for improved efficiency. Stay tuned for updates!
+This process generates a 4096-dimensional embedding for each training sample. We recommend saving these embeddings to disk for future reuse, avoiding the computational cost of regenerating them.
+
+While the current implementation processes samples one at a time and iterates over tangent vectors sequentially, future versions will support batched computation over both samples and tangent vectors for improved efficiency. Stay tuned for updates!
 
 ### Step 2: Select Influential Samples
 Use the following code to select the most influential training samples:
