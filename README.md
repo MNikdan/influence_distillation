@@ -87,8 +87,8 @@ selected_idx = infdist.pick_first_order(
 ```
 
 This process:
-1. Approximates training sample gradients using a landmark-based approach
-2. Computes influence scores by matching against target sample gradients
+1. Approximates training sample gradients using the landmark-based approach
+2. Computes influence scores by matching them against target sample gradients
 3. Returns indices of the `k` most influential training samples
 
 Note that this command only considers one billion elements of the `down_proj` gradients. For smaller models, you can use all gradients by setting `proj_subset` and `param_mask_numel` to `None`. See Appendix I in [the paper](https://arxiv.org/abs/2505.19051) for more details on gradient masking and projection.
