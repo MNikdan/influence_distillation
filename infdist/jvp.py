@@ -26,7 +26,7 @@ def _get_params(model, param_regex, skip_embd, long_num_params=False):
     return tuple(params)
 
 @torch.no_grad()
-def create_jvp_store(model, samples, num_blocks=4, num_tangents=2, proj_dim=4096, proj_num_parts=1, param_regex=None, skip_embd=False, seed=43):
+def create_jvp_store(model, loader, num_blocks=4, num_tangents=2, proj_dim=4096, proj_num_parts=1, param_regex=None, skip_embd=False, seed=43):
     device = next(model.parameters()).device
 
     model.cpu()
@@ -65,11 +65,11 @@ def create_jvp_store(model, samples, num_blocks=4, num_tangents=2, proj_dim=4096
             return output_tangent
     
     print("Creating JVP store")
-    tangents = [[] for _ in samples]
+    tangents = [[] for _ in range(len(loader.dataset))]
     for i in range(num_tangents):
         print(f"Creating tangent {i+1}/{num_tangents}")
         vec = tuple([torch.randn_like(param) for param in params])
-        for j, sample_j in tqdm(enumerate(samples), total=len(samples)):
+        for j, sample_j in tqdm(enumerate(loader.dataset), total=len(loader.dataset)):
             sample_j = {k: v.to(device).unsqueeze(0) for k, v in sample_j.items()}
             tangent = _jvp(sample_j, vec)
             tangents[j].append(tangent.cpu())
